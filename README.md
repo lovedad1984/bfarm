@@ -1,12 +1,35 @@
-# React + Vite
+# bFarm - B급 과일 온라인 직거래 쇼핑몰
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+신선한 제철 과일을 편리하게 구매할 수 있는 온라인 쇼핑몰 웹 애플리케이션입니다.
 
-Currently, two official plugins are available:
+## 프로젝트 소개
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+bFarm은 다음과 같은 기능을 제공합니다:
 
-## Expanding the ESLint configuration
+- 다양한 과일 상품 브라우징 및 검색
+- 사용자 인증 (회원가입/로그인)
+- 장바구니 기능 및 결제 시스템
+- 주문 추적 및 관리
+- 상품 리뷰 시스템
+- 관리자 기능 (상품 관리, 주문 관리)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 기술 스택
+
+- **프론트엔드**: React, React Router, Zustand
+- **UI 라이브러리**: Chakra UI
+- **백엔드/데이터베이스**: Firebase (Authentication, Firestore, Storage)
+- **빌드 도구**: Vite
+
+## 설치 및 실행
+
+### 필수 요구사항
+
+- Node.js 16.x 이상
+- npm 또는 yarn
+
+### 설치 과정
+
+1. 저장소 클론:
+   ```bash
+   git clone https://github.com/lovedad1984/bfarm.git
+   ```
