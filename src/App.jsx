@@ -1,6 +1,6 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import "./App.css";
+// import "./App.css";
 import { useAuthStore } from "./store/authStore";
 import system from "./theme";
 
@@ -31,8 +31,11 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
+          {/* 메인 페이지 */}
           <Route path="/" element={<Home />} />
+          {/* 인증 */}
           <Route path="/login" element={<Login />} />
+          {/* 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
