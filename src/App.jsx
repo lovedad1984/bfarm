@@ -8,11 +8,13 @@ import system from "./theme";
 
 import Header from "./layouts/Header";
 import Footer from "./layouts/Footer";
+import Home from "./pages/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ColorModeProvider } from "./components/ui/color-mode";
 
 // 임시
 
-const Home = () => <div>홈페이지</div>;
+// const Home = () => <div>홈페이지</div>;
 const Login = () => <div>로그인 페이지</div>;
 const NotFound = () => <div>페이지를 찾을 수 없습니다</div>;
 
@@ -28,18 +30,20 @@ function App() {
   }, [initialize]);
   return (
     <ChakraProvider value={system}>
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          {/* 메인 페이지 */}
-          <Route path="/" element={<Home />} />
-          {/* 인증 */}
-          <Route path="/login" element={<Login />} />
-          {/* 404 */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Footer />
-      </BrowserRouter>
+      <ColorModeProvider>
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            {/* 메인 페이지 */}
+            <Route path="/" element={<Home />} />
+            {/* 인증 */}
+            <Route path="/login" element={<Login />} />
+            {/* 404 */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+      </ColorModeProvider>
     </ChakraProvider>
   );
 }
