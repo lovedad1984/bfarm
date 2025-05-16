@@ -1,20 +1,16 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 // import "./App.css";
-import { useAuthStore } from "./store/authStore";
-import system from "./theme";
-
-// 레이아웃 컴포넌트
-
-import Header from "./layouts/Header";
-import Footer from "./layouts/Footer";
-import Home from "./pages/Home";
+import { useAuthStore } from "@store/authStore";
+import system from "@theme";
+import Header from "@layouts/Header";
+import Footer from "@layouts/Footer";
+import Home from "@pages/Home";
+import Signup from "@pages/Signup";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ColorModeProvider } from "./components/ui/color-mode";
+import { ColorModeProvider } from "@components/ui/color-mode";
+import { Toaster } from "@components/ui/toaster";
 
-// 임시
-
-// const Home = () => <div>홈페이지</div>;
 const Login = () => <div>로그인 페이지</div>;
 const NotFound = () => <div>페이지를 찾을 수 없습니다</div>;
 
@@ -38,11 +34,13 @@ function App() {
             <Route path="/" element={<Home />} />
             {/* 인증 */}
             <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
             {/* 404 */}
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />
         </BrowserRouter>
+        <Toaster />
       </ColorModeProvider>
     </ChakraProvider>
   );

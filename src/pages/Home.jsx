@@ -28,7 +28,7 @@ import bgImage from "@images/home_bg2.jpg";
 const mockProducts = [
   {
     id: 1,
-    imageUrl: "https://placehold.co/300x300",
+    imageUrl: "https://placehold.co/200x200",
     name: "[못난이] 알뜰 사과 3kg",
     originalPrice: "15,000원",
     discountPrice: "9,900원",
@@ -58,6 +58,14 @@ const mockProducts = [
     discountPrice: "12,000원",
     discountRate: "33%",
   },
+  {
+    id: 5,
+    imageUrl: "https://placehold.co/300x300",
+    name: "깜짝 특가! 유기농 레드베리 500g",
+    originalPrice: "18,000원",
+    discountPrice: "12,000원",
+    discountRate: "33%",
+  },
 ];
 
 // 재사용 가능한 상품 카드 컴포넌트
@@ -72,7 +80,7 @@ const ProductCard = ({ product }) => {
       overflow="hidden"
       bg={cardBg}
       boxShadow="sm"
-      minW="200px" // 가로 스크롤 시 최소 너비
+      w="200px" // 가로 스크롤 시 최소 너비
       _hover={{ boxShadow: "md", transform: "translateY(-2px)" }}
       transition="all 0.2s"
     >
@@ -80,7 +88,7 @@ const ProductCard = ({ product }) => {
         <Image src={product.imageUrl} alt={product.name} objectFit="cover" />
       </AspectRatio>
       <Box p={4}>
-        <Heading as="h3" size="sm" mb={1} noOfLines={2}>
+        <Heading as="h3" size="sm" mb={1} noOfLines={2} lineClamp={1}>
           {product.name}
         </Heading>
         {product.discountRate && (
@@ -213,7 +221,7 @@ const Home = () => {
         <HStack
           spacing={4}
           overflowX="auto"
-          pb={4} // pb는 스크롤바 영역 확보
+          pb={6} // pb는 스크롤바 영역 확보
           sx={{
             // 커스텀 스크롤바 (선택 사항)
             "&::-webkit-scrollbar": {
