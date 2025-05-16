@@ -21,6 +21,7 @@ import {
   FaShoppingBag,
   FaChevronRight,
 } from "react-icons/fa";
+import bgImage from "@images/home_bg.jpg";
 
 // 임시 상품 데이터 (실제로는 API로부터 받아옵니다)
 const mockProducts = [
@@ -119,7 +120,7 @@ const Home = () => {
         as="section"
         w="100%"
         h={{ base: "300px", md: "450px", lg: "600px" }} // 반응형 높이
-        bgImage="url('https://images.unsplash.com/photo-1666869888107-4e3650a60108?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')"
+        bgImage={`url(${bgImage})`}
         bgSize="cover"
         bgPosition="center"
         display="flex"
@@ -149,7 +150,7 @@ const Home = () => {
           >
             조금은 못생겼지만 맛과 영양은 그대로인 농산물을 만나보세요.
           </Text>
-          <Button
+          {/* <Button
             bg="positiveButtonBackground" // 시맨틱 토큰 사용
             color="positiveButtonText"
             _hover={{ bg: "positiveButtonHoverBackground" }}
@@ -157,7 +158,7 @@ const Home = () => {
             mt={4}
           >
             지금 쇼핑하기
-          </Button>
+          </Button> */}
         </VStack>
       </Box>
       {/* 2. 빠른 카테고리 이동 */}
