@@ -263,7 +263,7 @@ const Signup = () => {
                 <Text mb={2} fontWeight="medium">
                   비밀번호 *
                 </Text>
-                <Group attached>
+                <Group attached width="100%">
                   <Input
                     type={showPassword ? "text" : "password"}
                     name="password"
@@ -274,6 +274,7 @@ const Signup = () => {
                     flex="1"
                   />
                   <Button
+                    minW="auto"
                     variant="outline"
                     onClick={() => setShowPassword(!showPassword)}
                     px={3}
