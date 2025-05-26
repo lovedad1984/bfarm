@@ -28,21 +28,22 @@ const Header = () => {
     { name: "소개", path: "/about" },
     { name: "고객센터", path: "/contact" },
   ];
+
   return (
     <Box
-      background="bodyBackground"
+      bg="bg"
       w="100%"
       position="sticky"
       top={0}
       zIndex={1000}
+      borderBottomWidth="1px"
+      borderBottomColor="border"
     >
       <Flex
-        color="bodyTextColor"
+        color="fg"
         minH={"60px"}
         py={{ base: 2 }}
         px={{ base: 4 }}
-        borderBottom={1}
-        borderStyle={"solid"}
         align={"center"}
         maxW="container.xl"
         mx="auto"
@@ -65,38 +66,52 @@ const Header = () => {
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
-                _hover={{ bg: "rgba(0,0,0,0.05)" }}
+                color="fg"
+                _hover={{ bg: "button.ghost.hover" }}
+                borderRadius="md"
                 aria-label="Toggle Navigation"
               >
-                <IoMenu size="24px" color="red.500" />
+                <IoMenu size="24px" />
               </Box>
             </Drawer.Trigger>
 
             <Portal>
               <Drawer.Backdrop />
               <Drawer.Positioner>
-                <Drawer.Content>
-                  <Drawer.Header>
-                    <Drawer.Title>bFarm 메뉴</Drawer.Title>
+                <Drawer.Content bg="card.bg" color="fg" borderColor="border">
+                  <Drawer.Header
+                    borderBottomWidth="1px"
+                    borderBottomColor="border"
+                  >
+                    <Drawer.Title color="fg">bFarm 메뉴</Drawer.Title>
                     <Drawer.CloseTrigger asChild>
-                      <CloseButton size="sm" />
+                      <CloseButton
+                        size="sm"
+                        color="fg"
+                        _hover={{ bg: "button.ghost.hover" }}
+                      />
                     </Drawer.CloseTrigger>
                   </Drawer.Header>
 
                   <Drawer.Body>
-                    <VStack spacing={4} align="stretch" mt={2}>
+                    <VStack gap={4} align="stretch" mt={2}>
                       {/* 메뉴 항목들 */}
                       {mobileMenuItems.map((item) => (
                         <Link
                           key={item.path}
                           as={RouterLink}
                           to={item.path}
-                          onClick={() => setDrawerOpen(false)} // 메뉴 클릭 시 드로어 닫기
+                          onClick={() => setDrawerOpen(false)}
+                          color="fg"
+                          _hover={{ textDecoration: "none" }}
                         >
                           <Box
-                            p={2}
+                            p={3}
                             borderRadius="md"
-                            _hover={{ bg: "gray.100" }}
+                            _hover={{
+                              bg: "button.ghost.hover",
+                            }}
+                            transition="background-color 0.2s"
                           >
                             {item.name}
                           </Box>
@@ -104,26 +119,41 @@ const Header = () => {
                       ))}
 
                       {/* 장바구니와 로그인 상태에 따른 메뉴 */}
-                      <Box borderTopWidth="1px" pt={4} mt={2}>
+                      <Box
+                        borderTopWidth="1px"
+                        borderTopColor="border"
+                        pt={4}
+                        mt={2}
+                      >
                         {user ? (
                           <>
                             <Link
                               as={RouterLink}
                               to="/cart"
                               onClick={() => setDrawerOpen(false)}
+                              color="fg"
+                              _hover={{ textDecoration: "none" }}
                             >
                               <Box
-                                p={2}
+                                p={3}
                                 borderRadius="md"
-                                _hover={{ bg: "gray.100" }}
+                                _hover={{
+                                  bg: "button.ghost.hover",
+                                }}
+                                transition="background-color 0.2s"
                               >
                                 장바구니
                               </Box>
                             </Link>
                             <Box
-                              p={2}
+                              p={3}
                               borderRadius="md"
-                              _hover={{ bg: "gray.100" }}
+                              _hover={{
+                                bg: "button.ghost.hover",
+                              }}
+                              transition="background-color 0.2s"
+                              cursor="pointer"
+                              color="fg"
                               onClick={() => {
                                 signOut();
                                 setDrawerOpen(false);
@@ -138,11 +168,16 @@ const Header = () => {
                               as={RouterLink}
                               to="/login"
                               onClick={() => setDrawerOpen(false)}
+                              color="fg"
+                              _hover={{ textDecoration: "none" }}
                             >
                               <Box
-                                p={2}
+                                p={3}
                                 borderRadius="md"
-                                _hover={{ bg: "gray.100" }}
+                                _hover={{
+                                  bg: "button.ghost.hover",
+                                }}
+                                transition="background-color 0.2s"
                               >
                                 로그인
                               </Box>
@@ -151,11 +186,16 @@ const Header = () => {
                               as={RouterLink}
                               to="/signup"
                               onClick={() => setDrawerOpen(false)}
+                              color="fg"
+                              _hover={{ textDecoration: "none" }}
                             >
                               <Box
-                                p={2}
+                                p={3}
                                 borderRadius="md"
-                                _hover={{ bg: "gray.100" }}
+                                _hover={{
+                                  bg: "button.ghost.hover",
+                                }}
+                                transition="background-color 0.2s"
                               >
                                 회원가입
                               </Box>
@@ -166,7 +206,11 @@ const Header = () => {
                     </VStack>
                   </Drawer.Body>
 
-                  <Drawer.Footer>
+                  <Drawer.Footer
+                    borderTopWidth="1px"
+                    borderTopColor="border"
+                    pt={4}
+                  >
                     <ColorModeButton />
                   </Drawer.Footer>
                 </Drawer.Content>
@@ -188,26 +232,64 @@ const Header = () => {
             fontFamily={"heading"}
             fontWeight="bold"
             fontSize="xl"
-            color="teal"
+            color="positiveButtonBackground"
+            _hover={{
+              color: "positiveButtonHoverBackground",
+              textDecoration: "none",
+            }}
+            transition="color 0.2s"
           >
             bFarm
           </Text>
 
           {/* 데스크탑 메뉴 */}
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
-            <Stack direction={"row"} spacing={4}>
+            <Stack direction={"row"} gap={4}>
               <Box>
-                <Link as={RouterLink} to="/products" p={2}>
+                <Link
+                  as={RouterLink}
+                  to="/products"
+                  p={2}
+                  borderRadius="md"
+                  _hover={{
+                    bg: "gray.100",
+                    _dark: { bg: "whiteAlpha.200" },
+                    textDecoration: "none",
+                  }}
+                  transition="background-color 0.2s"
+                >
                   과일 쇼핑
                 </Link>
               </Box>
               <Box>
-                <Link as={RouterLink} to="/about" p={2}>
+                <Link
+                  as={RouterLink}
+                  to="/about"
+                  p={2}
+                  borderRadius="md"
+                  _hover={{
+                    bg: "gray.100",
+                    _dark: { bg: "whiteAlpha.200" },
+                    textDecoration: "none",
+                  }}
+                  transition="background-color 0.2s"
+                >
                   소개
                 </Link>
               </Box>
               <Box>
-                <Link as={RouterLink} to="/contact" p={2}>
+                <Link
+                  as={RouterLink}
+                  to="/contact"
+                  p={2}
+                  borderRadius="md"
+                  _hover={{
+                    bg: "gray.100",
+                    _dark: { bg: "whiteAlpha.200" },
+                    textDecoration: "none",
+                  }}
+                  transition="background-color 0.2s"
+                >
                   고객센터
                 </Link>
               </Box>
@@ -220,14 +302,31 @@ const Header = () => {
           flex={{ base: 1, md: 0 }}
           justify={"flex-end"}
           direction={"row"}
-          spacing={6}
+          gap={6}
         >
           {user ? (
             <>
-              <Button as={RouterLink} to="/cart" variant="ghost">
+              <Button
+                as={RouterLink}
+                to="/cart"
+                variant="ghost"
+                color="fg"
+                _hover={{
+                  bg: "button.ghost.hover",
+                }}
+              >
                 장바구니
               </Button>
-              <Button onClick={signOut}>로그아웃</Button>
+              <Button
+                onClick={signOut}
+                bg="cancelButtonBackgroundGray"
+                color="cancelButtonTextGray"
+                _hover={{
+                  bg: "cancelButtonHoverBackgroundGray",
+                }}
+              >
+                로그아웃
+              </Button>
             </>
           ) : (
             <>
@@ -240,8 +339,13 @@ const Header = () => {
                 display={{ base: "none", md: "inline-flex" }}
                 fontSize={"sm"}
                 fontWeight={400}
-                variant={"link"}
+                variant={"ghost"}
                 to={"/login"}
+                color="fg"
+                _hover={{
+                  bg: "button.ghost.hover",
+                  textDecoration: "none",
+                }}
               >
                 로그인
               </Button>
@@ -250,10 +354,12 @@ const Header = () => {
                 display={{ base: "none", md: "inline-flex" }}
                 fontSize={"sm"}
                 fontWeight={600}
-                colorPalette="teal"
+                bg="positiveButtonBackground"
+                color="positiveButtonText"
                 to={"/signup"}
                 _hover={{
-                  bg: "green.400",
+                  bg: "positiveButtonHoverBackground",
+                  textDecoration: "none",
                 }}
               >
                 회원가입

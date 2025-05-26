@@ -7,12 +7,11 @@ import {
   Text,
   Flex,
 } from "@chakra-ui/react";
-import { useColorModeValue } from "../components/ui/color-mode";
 import { Link as RouterLink } from "react-router-dom";
 
 const ListHeader = ({ children }) => {
   return (
-    <Text fontWeight={"500"} fontSize={"lg"} mb={2}>
+    <Text fontWeight={"500"} fontSize={"lg"} mb={2} color="fg">
       {children}
     </Text>
   );
@@ -21,60 +20,165 @@ const ListHeader = ({ children }) => {
 const Footer = () => {
   const year = new Date().getFullYear();
   return (
-    <Box
-      bg={useColorModeValue("gray.50", "gray.900")}
-      color={useColorModeValue("gray.700", "gray.200")}
-    >
+    <Box bg="bg" color="fg" borderTopWidth="1px" borderTopColor="border">
       <Container as={Stack} maxW={"container.xl"} py={10}>
-        <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
+        <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} gap={8}>
           <Stack align={"flex-start"}>
             <ListHeader>회사 소개</ListHeader>
-            <Link as={RouterLink} to="/about">
+            <Link
+              as={RouterLink}
+              to="/about"
+              color="fg"
+              _hover={{
+                color: "positiveButtonBackground",
+                textDecoration: "none",
+              }}
+              transition="color 0.2s"
+            >
               회사 소개
             </Link>
-            <Link as={RouterLink} to="/locations">
+            <Link
+              as={RouterLink}
+              to="/locations"
+              color="fg"
+              _hover={{
+                color: "positiveButtonBackground",
+                textDecoration: "none",
+              }}
+              transition="color 0.2s"
+            >
               매장 위치
             </Link>
-            <Link as={RouterLink} to="/career">
+            <Link
+              as={RouterLink}
+              to="/career"
+              color="fg"
+              _hover={{
+                color: "positiveButtonBackground",
+                textDecoration: "none",
+              }}
+              transition="color 0.2s"
+            >
               채용 정보
             </Link>
           </Stack>
 
           <Stack align={"flex-start"}>
             <ListHeader>고객 지원</ListHeader>
-            <Link as={RouterLink} to="/support">
+            <Link
+              as={RouterLink}
+              to="/support"
+              color="fg"
+              _hover={{
+                color: "positiveButtonBackground",
+                textDecoration: "none",
+              }}
+              transition="color 0.2s"
+            >
               고객센터
             </Link>
-            <Link as={RouterLink} to="/faq">
+            <Link
+              as={RouterLink}
+              to="/faq"
+              color="fg"
+              _hover={{
+                color: "positiveButtonBackground",
+                textDecoration: "none",
+              }}
+              transition="color 0.2s"
+            >
               자주 묻는 질문
             </Link>
-            <Link as={RouterLink} to="/returns">
+            <Link
+              as={RouterLink}
+              to="/returns"
+              color="fg"
+              _hover={{
+                color: "positiveButtonBackground",
+                textDecoration: "none",
+              }}
+              transition="color 0.2s"
+            >
               교환 및 환불
             </Link>
           </Stack>
 
           <Stack align={"flex-start"}>
             <ListHeader>쇼핑하기</ListHeader>
-            <Link as={RouterLink} to="/products?category=사과">
+            <Link
+              as={RouterLink}
+              to="/products?category=사과"
+              color="fg"
+              _hover={{
+                color: "positiveButtonBackground",
+                textDecoration: "none",
+              }}
+              transition="color 0.2s"
+            >
               사과
             </Link>
-            <Link as={RouterLink} to="/products?category=배">
+            <Link
+              as={RouterLink}
+              to="/products?category=배"
+              color="fg"
+              _hover={{
+                color: "positiveButtonBackground",
+                textDecoration: "none",
+              }}
+              transition="color 0.2s"
+            >
               배
             </Link>
-            <Link as={RouterLink} to="/products?category=감귤">
+            <Link
+              as={RouterLink}
+              to="/products?category=감귤"
+              color="fg"
+              _hover={{
+                color: "positiveButtonBackground",
+                textDecoration: "none",
+              }}
+              transition="color 0.2s"
+            >
               감귤
             </Link>
-            <Link as={RouterLink} to="/products?category=포도">
+            <Link
+              as={RouterLink}
+              to="/products?category=포도"
+              color="fg"
+              _hover={{
+                color: "positiveButtonBackground",
+                textDecoration: "none",
+              }}
+              transition="color 0.2s"
+            >
               포도
             </Link>
           </Stack>
 
           <Stack align={"flex-start"}>
             <ListHeader>법적 고지</ListHeader>
-            <Link as={RouterLink} to="/privacy">
+            <Link
+              as={RouterLink}
+              to="/privacy"
+              color="fg"
+              _hover={{
+                color: "positiveButtonBackground",
+                textDecoration: "none",
+              }}
+              transition="color 0.2s"
+            >
               개인정보처리방침
             </Link>
-            <Link as={RouterLink} to="/terms">
+            <Link
+              as={RouterLink}
+              to="/terms"
+              color="fg"
+              _hover={{
+                color: "positiveButtonBackground",
+                textDecoration: "none",
+              }}
+              transition="color 0.2s"
+            >
               이용약관
             </Link>
           </Stack>
@@ -87,14 +191,14 @@ const Footer = () => {
           _before={{
             content: '""',
             borderBottom: "1px solid",
-            borderColor: useColorModeValue("gray.200", "gray.700"),
+            borderColor: "border",
             flexGrow: 1,
             mr: 8,
           }}
           _after={{
             content: '""',
             borderBottom: "1px solid",
-            borderColor: useColorModeValue("gray.200", "gray.700"),
+            borderColor: "border",
             flexGrow: 1,
             ml: 8,
           }}
@@ -102,14 +206,19 @@ const Footer = () => {
           <Text
             fontSize="2xl"
             fontWeight="bold"
-            color="green.600"
+            color="positiveButtonBackground"
             as={RouterLink}
             to="/"
+            _hover={{
+              color: "positiveButtonHoverBackground",
+              textDecoration: "none",
+            }}
+            transition="color 0.2s"
           >
             bFarm
           </Text>
         </Flex>
-        <Text pt={6} fontSize={"sm"} textAlign={"center"}>
+        <Text pt={6} fontSize={"sm"} textAlign={"center"} color="fg">
           © {year} bFarm. All rights reserved.
         </Text>
       </Box>

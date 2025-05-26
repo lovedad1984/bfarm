@@ -1,4 +1,5 @@
 import { createSystem, defaultConfig } from "@chakra-ui/react";
+
 const fruitBasketColors = {
   // Light Mode Palette
   ivoryLight: "#FFF8E1",
@@ -18,24 +19,21 @@ const fruitBasketColors = {
   ivoryDarkText: "#F7F1E3",
   orangeDark: "#FFA726",
   orangeDarkHover: "#FFB74D",
-  brownDarkButtonTextDark: "#4E342E", // 어두운 배경 위 밝은 버튼의 어두운 텍스트
+  brownDarkButtonTextDark: "#4E342E",
   greenDark: "#689F38",
   greenDarkHover: "#7CB342",
-  // whiteTextDark: "#FFFFFF", // 다크모드 연두 버튼 위 텍스트로 ivoryDarkText와 유사하나, 필요시 명시
   grayNeutralDark: "#4A4A4A",
   grayLightTextDark: "#E0E0E0",
   grayHoverDark: "#5A5A5A",
 };
 
-// 2. Chakra UI 시스템 생성 및 테마 확장
 const system = createSystem(defaultConfig, {
   theme: {
     tokens: {
       colors: {
-        ...fruitBasketColors, // 위에서 정의한 기본 색상들을 여기에 포함
+        ...fruitBasketColors,
       },
       fonts: {
-        // 기존 폰트 설정 유지
         heading: { value: '"Noto Sans KR", sans-serif' },
         body: { value: '"Noto Sans KR", sans-serif' },
       },
@@ -43,16 +41,98 @@ const system = createSystem(defaultConfig, {
     semanticTokens: {
       colors: {
         // === 본문 색상 ===
-        bodyBackground: {
+        bg: {
           value: {
             base: "{colors.ivoryLight}",
             _dark: "{colors.brownDeepDarkBg}",
           },
         },
-        bodyTextColor: {
+        fg: {
           value: {
             base: "{colors.brownDarkText}",
             _dark: "{colors.ivoryDarkText}",
+          },
+        },
+
+        // === 카드/폼 배경 ===
+        "card.bg": {
+          value: {
+            base: "white",
+            _dark: "#3A2B1E", // 다크모드에서 약간 밝은 브라운
+          },
+        },
+
+        // === 보더 색상 ===
+        border: {
+          value: {
+            base: "{colors.grayNeutralLight}",
+            _dark: "#5A4A3D", // 다크모드 보더
+          },
+        },
+
+        // === Input 색상 ===
+        "input.bg": {
+          value: {
+            base: "white",
+            _dark: "#2D2419",
+          },
+        },
+        "input.border": {
+          value: {
+            base: "{colors.grayNeutralLight}",
+            _dark: "#5A4A3D",
+          },
+        },
+
+        // === 버튼 색상 ===
+        "button.ghost.bg": {
+          value: {
+            base: "transparent",
+            _dark: "transparent",
+          },
+        },
+        "button.ghost.hover": {
+          value: {
+            base: "gray.100",
+            _dark: "whiteAlpha.200",
+          },
+        },
+        "button.outline.bg": {
+          value: {
+            base: "white",
+            _dark: "#2D2419",
+          },
+        },
+        "button.outline.border": {
+          value: {
+            base: "{colors.grayNeutralLight}",
+            _dark: "#5A4A3D",
+          },
+        },
+
+        // === 체크박스 색상 ===
+        "checkbox.bg": {
+          value: {
+            base: "white",
+            _dark: "#2D2419",
+          },
+        },
+        "checkbox.border": {
+          value: {
+            base: "{colors.grayNeutralLight}",
+            _dark: "#5A4A3D",
+          },
+        },
+        "checkbox.checked.bg": {
+          value: {
+            base: "{colors.orangePrimary}",
+            _dark: "{colors.orangeDark}",
+          },
+        },
+        "checkbox.checked.border": {
+          value: {
+            base: "{colors.orangePrimary}",
+            _dark: "{colors.orangeDark}",
           },
         },
 
@@ -75,7 +155,6 @@ const system = createSystem(defaultConfig, {
             _dark: "{colors.orangeDarkHover}",
           },
         },
-        // 호버 시 텍스트 색상이 변경되지 않는다면, 별도 정의 필요 X
 
         // === 취소 버튼 (연두색 계열) ===
         cancelButtonBackgroundGreen: {
@@ -113,53 +192,21 @@ const system = createSystem(defaultConfig, {
             _dark: "{colors.grayHoverDark}",
           },
         },
-
-        // 기존 primary, secondary, brand, myColor는 필요에 따라 정리
-        // primary: { value: "{colors.ivoryLight}" }, // 예시: fruitBasketColors의 값으로 대체
-        // secondary: { value: "{colors.greenPrimary}" }, // 예시: fruitBasketColors의 값으로 대체
       },
     },
-    // (선택 사항) 컴포넌트 스타일 직접 정의
-    // Panda CSS에서는 components 스타일을 여기에 정의할 수 있습니다.
-    // 예를 들어 Button 컴포넌트의 기본 스타일과 variant를 정의할 수 있습니다.
-    // components: {
-    //   Button: {
-    //     baseStyle: {
-    //       // 모든 버튼에 적용될 기본 스타일
-    //     },
-    //     variants: {
-    //       positive: { // "positive"라는 variant를 만듦
-    //         bg: "positiveButtonBackground", // semantic token 사용
-    //         color: "positiveButtonText",
-    //         _hover: {
-    //           bg: "positiveButtonHoverBackground",
-    //         }
-    //       },
-    //       cancelGreen: {
-    //         bg: "cancelButtonBackgroundGreen",
-    //         color: "cancelButtonTextGreen",
-    //         _hover: {
-    //           bg: "cancelButtonHoverBackgroundGreen",
-    //         }
-    //       },
-    //       cancelGray: {
-    //         bg: "cancelButtonBackgroundGray",
-    //         color: "cancelButtonTextGray",
-    //         _hover: {
-    //           bg: "cancelButtonHoverBackgroundGray",
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
   },
-  // 전역 스타일 (필요한 경우)
-  // globalCss: {
-  //   body: {
-  //     bg: "bodyBackground", // semantic token 사용
-  //     color: "bodyTextColor",
-  //   },
-  // },
+  // 글로벌 CSS 활성화
+  globalCss: {
+    body: {
+      bg: "bg", // semantic token 사용
+      color: "fg",
+      transition: "background-color 0.2s, color 0.2s",
+    },
+    // HTML 요소에도 배경 적용
+    html: {
+      bg: "bg",
+    },
+  },
 });
 
 export default system;

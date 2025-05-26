@@ -5,7 +5,6 @@ import {
   useDisclosure,
   Container,
   Box,
-  Stack,
   Heading,
   HStack,
   Input,
@@ -17,6 +16,7 @@ import {
   VStack,
   Group,
   Portal,
+  CloseButton,
 } from "@chakra-ui/react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useAuthStore } from "@/store/authStore";
@@ -230,7 +230,15 @@ const Signup = () => {
 
   return (
     <Container maxW="lg" py={12}>
-      <Box bg="white" p={8} borderRadius="lg" boxShadow="lg">
+      <Box
+        bg="card.bg"
+        color="fg"
+        p={8}
+        borderRadius="lg"
+        boxShadow="lg"
+        border="1px"
+        borderColor="border"
+      >
         <VStack gap={6}>
           <Heading as="h1" size="xl" textAlign="center">
             bFarm 회원가입
@@ -249,7 +257,15 @@ const Signup = () => {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="example@email.com"
-                  borderColor={errors.email ? "red.500" : "gray.300"}
+                  bg="input.bg"
+                  borderColor={errors.email ? "red.500" : "input.border"}
+                  _hover={{
+                    borderColor: errors.email ? "red.600" : "input.border",
+                  }}
+                  _focus={{
+                    borderColor: errors.email ? "red.500" : "blue.500",
+                    boxShadow: "0 0 0 1px var(--chakra-colors-blue-500)",
+                  }}
                 />
                 {errors.email && (
                   <Text color="red.500" fontSize="sm" mt={1}>
@@ -270,14 +286,29 @@ const Signup = () => {
                     value={formData.password}
                     onChange={handleChange}
                     placeholder="비밀번호 (8자 이상)"
-                    borderColor={errors.password ? "red.500" : "gray.300"}
+                    bg="input.bg"
+                    borderColor={errors.password ? "red.500" : "input.border"}
+                    _hover={{
+                      borderColor: errors.password ? "red.600" : "input.border",
+                    }}
+                    _focus={{
+                      borderColor: errors.password ? "red.500" : "blue.500",
+                      boxShadow: "0 0 0 1px var(--chakra-colors-blue-500)",
+                    }}
                     flex="1"
                   />
                   <Button
-                    minW="auto"
                     variant="outline"
                     onClick={() => setShowPassword(!showPassword)}
                     px={3}
+                    minW="auto"
+                    bg="button.outline.bg"
+                    borderColor="button.outline.border"
+                    color="fg"
+                    _hover={{
+                      bg: "button.ghost.hover",
+                      borderColor: "button.outline.border",
+                    }}
                   >
                     {showPassword ? <FiEyeOff /> : <FiEye />}
                   </Button>
@@ -300,7 +331,21 @@ const Signup = () => {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   placeholder="비밀번호 확인"
-                  borderColor={errors.confirmPassword ? "red.500" : "gray.300"}
+                  bg="input.bg"
+                  borderColor={
+                    errors.confirmPassword ? "red.500" : "input.border"
+                  }
+                  _hover={{
+                    borderColor: errors.confirmPassword
+                      ? "red.600"
+                      : "input.border",
+                  }}
+                  _focus={{
+                    borderColor: errors.confirmPassword
+                      ? "red.500"
+                      : "blue.500",
+                    boxShadow: "0 0 0 1px var(--chakra-colors-blue-500)",
+                  }}
                 />
                 {errors.confirmPassword && (
                   <Text color="red.500" fontSize="sm" mt={1}>
@@ -320,7 +365,15 @@ const Signup = () => {
                   value={formData.username}
                   onChange={handleChange}
                   placeholder="사용자 이름"
-                  borderColor={errors.username ? "red.500" : "gray.300"}
+                  bg="input.bg"
+                  borderColor={errors.username ? "red.500" : "input.border"}
+                  _hover={{
+                    borderColor: errors.username ? "red.600" : "input.border",
+                  }}
+                  _focus={{
+                    borderColor: errors.username ? "red.500" : "blue.500",
+                    boxShadow: "0 0 0 1px var(--chakra-colors-blue-500)",
+                  }}
                 />
                 {errors.username && (
                   <Text color="red.500" fontSize="sm" mt={1}>
@@ -351,17 +404,33 @@ const Signup = () => {
 
                   <Portal>
                     <Dialog.Backdrop />
-                    <Dialog.Positioner>
-                      <Dialog.Content>
-                        <Dialog.Header>
-                          <Dialog.Title>본인인증</Dialog.Title>
+                    <Dialog.Positioner p={4}>
+                      <Dialog.Content
+                        bg="card.bg"
+                        color="fg"
+                        borderColor="border"
+                        borderRadius="lg"
+                        maxW="md"
+                        w="full"
+                      >
+                        <Dialog.Header
+                          borderBottomWidth="1px"
+                          borderBottomColor="border"
+                        >
+                          <Dialog.Title color="fg">본인인증</Dialog.Title>
                         </Dialog.Header>
-                        <Dialog.CloseTrigger />
+                        <Dialog.CloseTrigger asChild>
+                          <CloseButton
+                            size="sm"
+                            color="fg"
+                            _hover={{ bg: "button.ghost.hover" }}
+                          />
+                        </Dialog.CloseTrigger>
 
                         <Dialog.Body>
                           <VStack gap={4}>
                             <Box width="100%">
-                              <Text mb={2} fontWeight="medium">
+                              <Text mb={2} fontWeight="medium" color="fg">
                                 이름 *
                               </Text>
                               <Input
@@ -369,11 +438,21 @@ const Signup = () => {
                                 value={verification.name}
                                 onChange={handleVerificationChange}
                                 placeholder="실명을 입력하세요"
+                                bg="input.bg"
+                                borderColor="input.border"
+                                color="fg"
+                                _placeholder={{ color: "gray.500" }}
+                                _hover={{ borderColor: "input.border" }}
+                                _focus={{
+                                  borderColor: "blue.500",
+                                  boxShadow:
+                                    "0 0 0 1px var(--chakra-colors-blue-500)",
+                                }}
                               />
                             </Box>
 
                             <Box width="100%">
-                              <Text mb={2} fontWeight="medium">
+                              <Text mb={2} fontWeight="medium" color="fg">
                                 휴대폰 번호 *
                               </Text>
                               <Input
@@ -381,12 +460,22 @@ const Signup = () => {
                                 value={verification.phone}
                                 onChange={handleVerificationChange}
                                 placeholder="'-' 없이 입력하세요"
+                                bg="input.bg"
+                                borderColor="input.border"
+                                color="fg"
+                                _placeholder={{ color: "gray.500" }}
+                                _hover={{ borderColor: "input.border" }}
+                                _focus={{
+                                  borderColor: "blue.500",
+                                  boxShadow:
+                                    "0 0 0 1px var(--chakra-colors-blue-500)",
+                                }}
                               />
                             </Box>
 
                             {verification.isCodeSent && (
                               <Box width="100%">
-                                <Text mb={2} fontWeight="medium">
+                                <Text mb={2} fontWeight="medium" color="fg">
                                   인증번호 *
                                 </Text>
                                 <HStack>
@@ -395,6 +484,16 @@ const Signup = () => {
                                     value={verification.verificationCode}
                                     onChange={handleVerificationChange}
                                     placeholder="인증번호 6자리"
+                                    bg="input.bg"
+                                    borderColor="input.border"
+                                    color="fg"
+                                    _placeholder={{ color: "gray.500" }}
+                                    _hover={{ borderColor: "input.border" }}
+                                    _focus={{
+                                      borderColor: "blue.500",
+                                      boxShadow:
+                                        "0 0 0 1px var(--chakra-colors-blue-500)",
+                                    }}
                                   />
                                   <Button
                                     onClick={verifyCode}
@@ -408,14 +507,28 @@ const Signup = () => {
                           </VStack>
                         </Dialog.Body>
 
-                        <Dialog.Footer>
+                        <Dialog.Footer
+                          borderTopWidth="1px"
+                          borderTopColor="border"
+                          pt={4}
+                        >
                           <Dialog.ActionTrigger asChild>
-                            <Button variant="outline">취소</Button>
+                            <Button
+                              variant="outline"
+                              bg="button.outline.bg"
+                              borderColor="button.outline.border"
+                              color="fg"
+                              _hover={{ bg: "button.ghost.hover" }}
+                            >
+                              취소
+                            </Button>
                           </Dialog.ActionTrigger>
                           <Button
-                            colorScheme="blue"
+                            bg="positiveButtonBackground"
+                            color="positiveButtonText"
                             onClick={sendVerificationCode}
                             loading={isLoading}
+                            _hover={{ bg: "positiveButtonHoverBackground" }}
                           >
                             {!verification.isCodeSent
                               ? "인증번호 발송"
@@ -447,6 +560,8 @@ const Signup = () => {
                       readOnly
                       placeholder="우편번호"
                       width="40%"
+                      bg="input.bg"
+                      borderColor="input.border"
                     />
                     <Button
                       colorScheme="blue"
@@ -464,6 +579,8 @@ const Signup = () => {
                     readOnly
                     placeholder="기본 주소"
                     width="100%"
+                    bg="input.bg"
+                    borderColor="input.border"
                   />
                   <Input
                     type="text"
@@ -472,6 +589,13 @@ const Signup = () => {
                     onChange={handleChange}
                     placeholder="상세 주소"
                     width="100%"
+                    bg="input.bg"
+                    borderColor="input.border"
+                    _hover={{ borderColor: "input.border" }}
+                    _focus={{
+                      borderColor: "blue.500",
+                      boxShadow: "0 0 0 1px var(--chakra-colors-blue-500)",
+                    }}
                   />
                 </VStack>
                 {errors.address && (
@@ -496,15 +620,32 @@ const Signup = () => {
                   }
                 >
                   <Checkbox.HiddenInput />
-                  <Checkbox.Control>
+                  <Checkbox.Control
+                    bg="checkbox.bg"
+                    borderColor="checkbox.border"
+                    _checked={{
+                      bg: "checkbox.checked.bg",
+                      borderColor: "checkbox.checked.border",
+                      color: "white",
+                    }}
+                    _hover={{
+                      borderColor: formData.termsAgreed
+                        ? "checkbox.checked.border"
+                        : "checkbox.border",
+                    }}
+                  >
                     <Checkbox.Indicator />
                   </Checkbox.Control>
-                  <Checkbox.Label>
+                  <Checkbox.Label color="fg">
                     <Link
-                      color="blue.500"
+                      color="positiveButtonBackground"
                       href="/terms"
                       target="_blank"
                       rel="noopener noreferrer"
+                      _hover={{
+                        color: "positiveButtonHoverBackground",
+                        textDecoration: "underline",
+                      }}
                     >
                       이용약관
                     </Link>
@@ -528,15 +669,32 @@ const Signup = () => {
                   }
                 >
                   <Checkbox.HiddenInput />
-                  <Checkbox.Control>
+                  <Checkbox.Control
+                    bg="checkbox.bg"
+                    borderColor="checkbox.border"
+                    _checked={{
+                      bg: "checkbox.checked.bg",
+                      borderColor: "checkbox.checked.border",
+                      color: "white",
+                    }}
+                    _hover={{
+                      borderColor: formData.privacyAgreed
+                        ? "checkbox.checked.border"
+                        : "checkbox.border",
+                    }}
+                  >
                     <Checkbox.Indicator />
                   </Checkbox.Control>
-                  <Checkbox.Label>
+                  <Checkbox.Label color="fg">
                     <Link
-                      color="blue.500"
+                      color="positiveButtonBackground"
                       href="/privacy"
                       target="_blank"
                       rel="noopener noreferrer"
+                      _hover={{
+                        color: "positiveButtonHoverBackground",
+                        textDecoration: "underline",
+                      }}
                     >
                       개인정보 처리방침
                     </Link>
@@ -560,10 +718,23 @@ const Signup = () => {
                   }
                 >
                   <Checkbox.HiddenInput />
-                  <Checkbox.Control>
+                  <Checkbox.Control
+                    bg="checkbox.bg"
+                    borderColor="checkbox.border"
+                    _checked={{
+                      bg: "checkbox.checked.bg",
+                      borderColor: "checkbox.checked.border",
+                      color: "white",
+                    }}
+                    _hover={{
+                      borderColor: formData.marketingAgreed
+                        ? "checkbox.checked.border"
+                        : "checkbox.border",
+                    }}
+                  >
                     <Checkbox.Indicator />
                   </Checkbox.Control>
-                  <Checkbox.Label>
+                  <Checkbox.Label color="fg">
                     마케팅 정보 수신에 동의합니다 (선택)
                   </Checkbox.Label>
                 </Checkbox.Root>

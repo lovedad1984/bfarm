@@ -2,23 +2,43 @@
 
 import { ClientOnly, IconButton, Skeleton, Span } from "@chakra-ui/react";
 import { ThemeProvider, useTheme } from "next-themes";
-
 import * as React from "react";
 import { LuMoon, LuSun } from "react-icons/lu";
 
 export function ColorModeProvider(props) {
   return (
-    <ThemeProvider attribute="class" disableTransitionOnChange {...props} />
+    <ThemeProvider
+      attribute="class"
+      disableTransitionOnChange={false}
+      enableSystem={true}
+      defaultTheme="light"
+      {...props}
+    />
   );
 }
 
 export function useColorMode() {
-  const { resolvedTheme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme, theme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const toggleColorMode = () => {
     setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
+
+  if (!mounted) {
+    return {
+      colorMode: "light",
+      setColorMode: setTheme,
+      toggleColorMode,
+    };
+  }
+
   return {
-    colorMode: resolvedTheme,
+    colorMode: resolvedTheme || "light",
     setColorMode: setTheme,
     toggleColorMode,
   };
@@ -31,7 +51,7 @@ export function useColorModeValue(light, dark) {
 
 export function ColorModeIcon() {
   const { colorMode } = useColorMode();
-  return colorMode === "dark" ? <LuMoon /> : <LuSun />;
+  return colorMode === "dark" ? <LuSun /> : <LuMoon />;
 }
 
 export const ColorModeButton = React.forwardRef(function ColorModeButton(
@@ -39,6 +59,7 @@ export const ColorModeButton = React.forwardRef(function ColorModeButton(
   ref
 ) {
   const { toggleColorMode } = useColorMode();
+
   return (
     <ClientOnly fallback={<Skeleton boxSize="8" />}>
       <IconButton
@@ -47,6 +68,10 @@ export const ColorModeButton = React.forwardRef(function ColorModeButton(
         aria-label="Toggle color mode"
         size="sm"
         ref={ref}
+        color="fg"
+        _hover={{
+          bg: "button.ghost.hover",
+        }}
         {...props}
         css={{
           _icon: {
