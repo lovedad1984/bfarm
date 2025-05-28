@@ -1,72 +1,162 @@
 import { create } from "zustand";
-
-import { auth } from "../services/firebase";
+import { auth, db } from "../services/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
   onAuthStateChanged,
 } from "firebase/auth";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
-export const useAuthStore = create((set) => ({
-  user: null, // 현재 로그인된 사용자 정보(초기에는 null)
-  loading: true, // 인증 관련 작업 진행 중인지 여부 (초기에는 true, 앱 시작 시 인증 상태 확인)
+export const useAuthStore = create((set, get) => ({
+  user: null, // 현재 로그인된 사용자 정보
+  userProfile: null, // Firestore에서 가져온 사용자 프로필 정보
+  loading: true, // 인증 관련 작업 진행 중인지 여부
   error: null, // 인증 과정에서 발생한 에러 메시지
 
-  signUp: async (email, password) => {
+  // 회원가입 함수 - Firestore에 추가 정보 저장 포함
+  signUp: async (email, password, userData) => {
     try {
-      // 로딩 상태 시작, 이전 에러 초기화
       set({ loading: true, error: null });
-      // 이메일과 비밀번호로 새 사용자 생성
-      await createUserWithEmailAndPassword(auth, email, password);
-      // 성공 시 user 상태는 onAuthStateChanged 콜백에서 업데이트 됩니다.
+
+      // Firebase Authentication으로 사용자 생성
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      // Firestore에 사용자 추가 정보 저장
+      const userProfileData = {
+        uid: user.uid,
+        email: user.email,
+        username: userData.username,
+        address: userData.address,
+        addressDetail: userData.addressDetail || "",
+        zipCode: userData.zipCode,
+        isVerified: userData.isVerified || false,
+        marketingAgreed: userData.marketingAgreed || false,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      try {
+        await setDoc(doc(db, "users", user.uid), userProfileData);
+        console.log("Firestore 프로필 저장 성공");
+      } catch (firestoreError) {
+        console.error("Firestore 저장 실패:", firestoreError);
+        // Firestore 실패해도 회원가입은 성공으로 처리
+        // (나중에 프로필은 업데이트 가능)
+        throw new Error(
+          "회원가입은 완료되었지만 프로필 저장에 실패했습니다. 나중에 프로필을 업데이트해주세요."
+        );
+      }
+
+      console.log("회원가입 완전 성공:", user.email);
     } catch (error) {
-      // 에러 발생 시 에러 메시지 저장
+      console.error("회원가입 오류:", error);
       set({ error: error.message });
+      throw error;
     } finally {
-      // 작업 완료 후 로딩 상태 종료
       set({ loading: false });
     }
   },
+
+  // 로그인 함수
   signIn: async (email, password) => {
     try {
       set({ loading: true, error: null });
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       set({ error: error.message });
+      throw error;
     } finally {
       set({ loading: false });
     }
   },
+
+  // 로그아웃 함수
   signOut: async () => {
     try {
       set({ loading: true, error: null });
       await firebaseSignOut(auth);
+      set({ userProfile: null }); // 사용자 프로필 정보 초기화
     } catch (error) {
       set({ error: error.message });
     } finally {
       set({ loading: false });
     }
   },
-  // 인증 상태 초기화 및 감지 액션
+
+  // 사용자 프로필 정보 가져오기
+  fetchUserProfile: async (uid) => {
+    try {
+      const userDoc = await getDoc(doc(db, "users", uid));
+      if (userDoc.exists()) {
+        const profileData = userDoc.data();
+        set({ userProfile: profileData });
+        return profileData;
+      }
+      return null;
+    } catch (error) {
+      console.error("사용자 프로필 가져오기 오류:", error);
+      set({ error: error.message });
+      return null;
+    }
+  },
+
+  // 사용자 프로필 업데이트
+  updateUserProfile: async (uid, updateData) => {
+    try {
+      set({ loading: true, error: null });
+
+      const updatedData = {
+        ...updateData,
+        updatedAt: new Date().toISOString(),
+      };
+
+      await setDoc(doc(db, "users", uid), updatedData, { merge: true });
+
+      // 로컬 상태 업데이트
+      set((state) => ({
+        userProfile: { ...state.userProfile, ...updatedData },
+      }));
+
+      return true;
+    } catch (error) {
+      console.error("프로필 업데이트 오류:", error);
+      set({ error: error.message });
+      return false;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  // 인증 상태 초기화 및 감지
   initialize: () => {
-    // onAuthStateChanged는 Firebase 인증 상태의 변경을 감지하는 리스너를 등록합니다.
-    // 사용자가 로그인하거나 로그아웃할 때마다 콜백 함수가 호출됩니다.
     const unsubscribe = onAuthStateChanged(
-      auth, // Firebase auth 객체
-      (user) => {
-        // 인증 상태 변경 시 호출되는 콜백
-        // user 객체가 있으면 로그인된 상태, null이면 로그아웃된 상태
+      auth,
+      async (user) => {
+        if (user) {
+          // 로그인된 경우 Firestore에서 추가 프로필 정보 가져오기
+          const { fetchUserProfile } = get();
+          await fetchUserProfile(user.uid);
+        } else {
+          // 로그아웃된 경우 프로필 정보 초기화
+          set({ userProfile: null });
+        }
         set({ user, loading: false });
       },
       (error) => {
-        // 에러 발생 시 호출되는 콜백
+        console.error("인증 상태 감지 오류:", error);
         set({ error: error.message, loading: false });
       }
     );
-    // onAuthStateChanged는 구독 해제 함수를 반환합니다.
-    // 이 함수를 호출하면 리스너가 제거되어 메모리 누수를 방지할 수 있습니다.
-    // 컴포넌트가 언마운트될 때 이 함수를 호출하는 것이 좋습니다.
+
     return unsubscribe;
   },
+
+  // 에러 메시지 초기화
+  clearError: () => set({ error: null }),
 }));

@@ -250,6 +250,7 @@ const Header = () => {
                   as={RouterLink}
                   to="/products"
                   p={2}
+                  color="fg"
                   borderRadius="md"
                   _hover={{
                     bg: "gray.100",
@@ -266,6 +267,7 @@ const Header = () => {
                   as={RouterLink}
                   to="/about"
                   p={2}
+                  color="fg"
                   borderRadius="md"
                   _hover={{
                     bg: "gray.100",
@@ -282,6 +284,7 @@ const Header = () => {
                   as={RouterLink}
                   to="/contact"
                   p={2}
+                  color="fg"
                   borderRadius="md"
                   _hover={{
                     bg: "gray.100",

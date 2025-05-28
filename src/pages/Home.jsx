@@ -203,7 +203,7 @@ const Home = () => {
         </HStack>
       </Box>
       {/* 3. 상품 추천 섹션 (예: "오늘의딜") */}
-      <Box as="section" px={{ base: 4, md: 8 }} mb={10}>
+      <Box as="section" maxW="1024px" mx="auto" px={{ base: 4, md: 8 }} mb={10}>
         <Flex mb={4} alignItems="center">
           <Heading as="h2" size="lg" color={sectionTitleColor}>
             오늘의딜 ⏰
@@ -239,7 +239,7 @@ const Home = () => {
         </HStack>
       </Box>
       {/* 4. 또 다른 상품 섹션 (예: "MD 추천") */}
-      <Box as="section" px={{ base: 4, md: 8 }} mb={10}>
+      <Box as="section" maxW="1024px" mx="auto" px={{ base: 4, md: 8 }} mb={10}>
         <Flex mb={4} alignItems="center">
           <Heading as="h2" size="lg" color={sectionTitleColor}>
             MD 추천! 놓치지 마세요 🌟
