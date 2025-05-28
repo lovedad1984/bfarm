@@ -36,7 +36,7 @@ const mockProducts = [
   },
   {
     id: 2,
-    imageUrl: "https://placehold.co/300x300",
+    imageUrl: "https://placehold.co/200x200",
     name: "[친환경] 신선 채소 꾸러미",
     originalPrice: "22,000원",
     discountPrice: "18,500원",
@@ -44,7 +44,7 @@ const mockProducts = [
   },
   {
     id: 3,
-    imageUrl: "https://placehold.co/300x300",
+    imageUrl: "https://placehold.co/200x200",
     name: "오늘 수확! 제철 과일 랜덤박스",
     originalPrice: "30,000원",
     discountPrice: "25,000원",
@@ -52,7 +52,7 @@ const mockProducts = [
   },
   {
     id: 4,
-    imageUrl: "https://placehold.co/300x300",
+    imageUrl: "https://placehold.co/200x200",
     name: "깜짝 특가! 유기농 블루베리 500g",
     originalPrice: "18,000원",
     discountPrice: "12,000원",
@@ -60,7 +60,7 @@ const mockProducts = [
   },
   {
     id: 5,
-    imageUrl: "https://placehold.co/300x300",
+    imageUrl: "https://placehold.co/200x200",
     name: "깜짝 특가! 유기농 레드베리 500g",
     originalPrice: "18,000원",
     discountPrice: "12,000원",
@@ -80,7 +80,8 @@ const ProductCard = ({ product }) => {
       overflow="hidden"
       bg={cardBg}
       boxShadow="sm"
-      w="200px" // 가로 스크롤 시 최소 너비
+      minW="180px"
+      maxW="180px"
       _hover={{ boxShadow: "md", transform: "translateY(-2px)" }}
       transition="all 0.2s"
     >
@@ -118,11 +119,9 @@ const ProductCard = ({ product }) => {
 
 const Home = () => {
   // 시맨틱 토큰 사용 예시 (theme/index.js에 정의된 값)
-  const sectionTitleColor = useColorModeValue("brownDarkText", "ivoryDarkText");
-  const subtleTextColor = useColorModeValue("gray.500", "gray.400");
 
   return (
-    <Box bg="bodyBackground" color="bodyTextColor" pb={10}>
+    <Box bg="bg" color="fg" pb={10}>
       {/* 전체 배경 및 글자색 적용 */}
       {/* 1. 메인 배너 (Hero Section) - 간단한 단일 배너 */}
       <Box
@@ -159,42 +158,45 @@ const Home = () => {
           >
             조금은 못생겼지만 맛과 영양은 그대로인 농산물을 만나보세요.
           </Text>
-          {/* <Button
-            bg="positiveButtonBackground" // 시맨틱 토큰 사용
-            color="positiveButtonText"
-            _hover={{ bg: "positiveButtonHoverBackground" }}
-            size="lg"
-            mt={4}
-          >
-            지금 쇼핑하기
-          </Button> */}
         </VStack>
       </Box>
       {/* 2. 빠른 카테고리 이동 */}
       <Box as="section" px={{ base: 4, md: 8 }} mb={10}>
         <HStack
-          spacing={{ base: 2, md: 4 }}
+          spacing={{ base: 1, md: 4 }}
           justify="space-around"
-          overflowX="auto" // 모바일에서 가로 스크롤
-          pb={2} // 스크롤바 공간
+          w="100%"
+          pb={2}
         >
           {[
             { icon: FaAppleAlt, label: "못난이 과일", color: "red.500" },
             { icon: FaLeaf, label: "친환경 채소", color: "green.500" },
             { icon: FaShoppingBag, label: "단독 특가", color: "blue.500" },
-            { icon: FaGift, label: "선물 세트", color: "purple.500" }, // FaGift 아이콘 추가 필요
+            { icon: FaGift, label: "선물 세트", color: "purple.500" },
           ].map((item) => (
             <Link key={item.label} _hover={{ textDecoration: "none" }}>
               <VStack
                 spacing={1}
                 align="center"
-                p={3}
+                p={{ base: 2, md: 3 }}
                 borderRadius="md"
                 _hover={{ bg: useColorModeValue("gray.100", "gray.700") }}
-                minW="80px"
+                minW={{ base: "60px", md: "80px" }}
+                maxW="120px" // 최대 너비 제한
+                flex="1" // 균등하게 공간 분배
               >
-                <Icon as={item.icon} w={8} h={8} color={item.color} />
-                <Text fontSize="xs" fontWeight="medium" whiteSpace="nowrap">
+                <Icon
+                  as={item.icon}
+                  w={{ base: 6, md: 8 }}
+                  h={{ base: 6, md: 8 }}
+                  color={item.color}
+                />
+                <Text
+                  fontSize={{ base: "2xs", md: "xs" }}
+                  fontWeight="medium"
+                  whiteSpace="nowrap"
+                  color="fg"
+                >
                   {item.label}
                 </Text>
               </VStack>
@@ -205,68 +207,101 @@ const Home = () => {
       {/* 3. 상품 추천 섹션 (예: "오늘의딜") */}
       <Box as="section" maxW="1024px" mx="auto" px={{ base: 4, md: 8 }} mb={10}>
         <Flex mb={4} alignItems="center">
-          <Heading as="h2" size="lg" color={sectionTitleColor}>
+          <Heading as="h2" size="lg" color="text.subtitle">
             오늘의딜 ⏰
           </Heading>
           <Spacer />
           <Link
-            color={subtleTextColor}
+            color="fg"
             fontWeight="medium"
             _hover={{ color: useColorModeValue("orangePrimary", "orangeDark") }}
           >
             더보기 <Icon as={FaChevronRight} boxSize={3} />
           </Link>
         </Flex>
-        {/* 가로 스크롤 상품 목록 */}
-        <HStack
-          spacing={4}
-          overflowX="auto"
-          pb={6} // pb는 스크롤바 영역 확보
-          sx={{
-            // 커스텀 스크롤바 (선택 사항)
-            "&::-webkit-scrollbar": {
-              height: "8px",
-            },
-            "&::-webkit-scrollbar-thumb": {
-              background: useColorModeValue("gray.300", "gray.600"),
-              borderRadius: "8px",
-            },
-          }}
-        >
-          {mockProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </HStack>
+        {/* 웹: 5개만 보이는 그리드, 모바일: 가로 스크롤 */}
+        <Box>
+          {/* 웹에서만 보이는 그리드 (5개) */}
+          <SimpleGrid
+            columns={5}
+            spacing={4}
+            display={{ base: "none", lg: "grid" }}
+          >
+            {mockProducts.slice(0, 5).map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </SimpleGrid>
+
+          {/* 모바일에서만 보이는 가로 스크롤 */}
+          <HStack
+            spacing={4}
+            overflowX="auto"
+            pb={6}
+            display={{ base: "flex", lg: "none" }}
+            sx={{
+              "&::-webkit-scrollbar": {
+                height: "8px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                background: useColorModeValue("gray.300", "gray.600"),
+                borderRadius: "8px",
+              },
+            }}
+          >
+            {mockProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </HStack>
+        </Box>
       </Box>
       {/* 4. 또 다른 상품 섹션 (예: "MD 추천") */}
       <Box as="section" maxW="1024px" mx="auto" px={{ base: 4, md: 8 }} mb={10}>
         <Flex mb={4} alignItems="center">
-          <Heading as="h2" size="lg" color={sectionTitleColor}>
+          <Heading as="h2" size="lg" color="text.subtitle">
             MD 추천! 놓치지 마세요 🌟
           </Heading>
           <Spacer />
           <Link
-            color={subtleTextColor}
+            color="fg"
             fontWeight="medium"
             _hover={{ color: useColorModeValue("orangePrimary", "orangeDark") }}
           >
             더보기 <Icon as={FaChevronRight} boxSize={3} />
           </Link>
         </Flex>
-        <SimpleGrid
-          columns={{ base: 2, md: 3, lg: 4 }}
-          spacing={{ base: 3, md: 4 }}
-          gap={4}
-        >
-          {/* 여기서는 SimpleGrid로 다른 레이아웃을 보여줍니다. */}
-          {mockProducts.slice(0, 4).map(
-            (
-              product // 예시로 4개만 보여줌
-            ) => (
+        <Box>
+          {/* 웹에서만 보이는 그리드 (5개) */}
+          <SimpleGrid
+            columns={5}
+            spacing={4}
+            display={{ base: "none", lg: "grid" }}
+          >
+            {mockProducts.slice(0, 5).map((product) => (
               <ProductCard key={product.id} product={product} />
-            )
-          )}
-        </SimpleGrid>
+            ))}
+          </SimpleGrid>
+
+          {/* 모바일에서만 보이는 가로 스크롤 */}
+          <HStack
+            spacing={4}
+            overflowX="auto"
+            pb={6}
+            display={{ base: "flex", lg: "none" }}
+            sx={{
+              "&::-webkit-scrollbar": {
+                height: "8px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                background: useColorModeValue("gray.300", "gray.600"),
+                borderRadius: "8px",
+              },
+            }}
+          >
+            {mockProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </HStack>
+        </Box>
       </Box>
       {/* 5. 스토리/콘텐츠 섹션 */}
       <Box
@@ -276,16 +311,22 @@ const Home = () => {
         bg={useColorModeValue("green.50", "gray.700")} // 섹션 배경색 다르게
         py={10}
       >
-        <VStack spacing={3} textAlign="center" mb={6}>
-          <Heading as="h2" size="xl" color={sectionTitleColor}>
+        <VStack spacing={3} textAlign="center" mb={6} maxW="1024px" mx="auto">
+          <Heading as="h2" size="xl" color="text.subtitle">
             bFarm 이야기
           </Heading>
-          <Text color={subtleTextColor} maxW="container.md">
+          <Text color="text.normal" maxW="container.md">
             우리는 버려지는 농산물에 새 가치를 부여하고, 지속 가능한 소비를
             만들어갑니다.
           </Text>
         </VStack>
-        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={6} gap={4}>
+        <SimpleGrid
+          columns={{ base: 1, md: 3 }}
+          spacing={6}
+          gap={4}
+          maxW="1024px"
+          mx="auto"
+        >
           {[
             {
               title: "못난이 농산물이란?",
@@ -322,14 +363,14 @@ const Home = () => {
               <Heading as="h3" size="md" mb={2}>
                 {story.title}
               </Heading>
-              <Text fontSize="sm" color={subtleTextColor}>
+              <Text fontSize="sm" color="text.normal">
                 {story.content}
               </Text>
             </Box>
           ))}
         </SimpleGrid>
       </Box>
-      {/* 추가적으로 고객 후기, 이벤트 배너 등 다양한 섹션을 구성할 수 있습니다. */}
+      {/* 추가적으로 고객 후기, 이벤트 배너 등 다양한 섹션을 구성 */}
     </Box>
   );
 };

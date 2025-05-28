@@ -54,6 +54,22 @@ const system = createSystem(defaultConfig, {
           },
         },
 
+        // === font 색상 ===
+        text: {
+          subtitle: {
+            value: {
+              base: "{colors.brownDarkText}",
+              _dark: "{colors.ivoryDarkText}",
+            },
+          },
+          normal: {
+            value: {
+              base: "gray.500",
+              _dark: "gray.400",
+            },
+          },
+        },
+
         // === 카드/폼 배경 ===
         "card.bg": {
           value: {

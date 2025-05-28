@@ -21,7 +21,7 @@ const Footer = () => {
   const year = new Date().getFullYear();
   return (
     <Box bg="bg" color="fg" borderTopWidth="1px" borderTopColor="border">
-      <Container as={Stack} maxW={"container.xl"} py={10}>
+      <Container as={Stack} maxW="1024px" mx="auto" py={10}>
         <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} gap={8}>
           <Stack align={"flex-start"}>
             <ListHeader>회사 소개</ListHeader>
