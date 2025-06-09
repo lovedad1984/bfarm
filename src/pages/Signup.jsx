@@ -25,7 +25,7 @@ import { toaster } from "@/components/ui/toaster";
 
 const Signup = () => {
   const navigate = useNavigate();
-  const { signUp, user, loading, error, clearError } = useAuthStore();
+  const { signUp, user, loading } = useAuthStore();
   const { isScriptLoaded, openPostcodeSearch } = useAddressSearch();
 
   // Dialog 상태 관리
@@ -63,15 +63,15 @@ const Signup = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // 에러 메시지 표시
-  useEffect(() => {
-    if (error) {
-      toaster.error({
-        title: "회원가입 오류",
-        description: error,
-      });
-      clearError();
-    }
-  }, [error, clearError]);
+  // useEffect(() => {
+  //   if (error) {
+  //     toaster.error({
+  //       title: "회원가입 오류",
+  //       description: error,
+  //     });
+  //     clearError();
+  //   }
+  // }, [error, clearError]);
 
   // 로그인 상태일 경우 메인 페이지로 리다이렉트
   useEffect(() => {
@@ -275,10 +275,13 @@ const Signup = () => {
 
       await signUp(formData.email, formData.password, userData);
 
-      toaster.success({
-        title: "회원가입 성공!",
-        description: "환영합니다! 잠시 후 메인 페이지로 이동합니다.",
-      });
+      setTimeout(() => {
+        toaster.success({
+          title: "🎉 회원가입 성공!",
+          description: "환영합니다! 잠시 후 메인 페이지로 이동합니다.",
+          duration: 4000,
+        });
+      }, 100);
 
       // 약간의 지연 후 페이지 이동
       setTimeout(() => {
@@ -286,7 +289,13 @@ const Signup = () => {
       }, 1500);
     } catch (error) {
       console.error("회원가입 오류:", error);
-      // 에러는 이미 store와 useEffect에서 처리됨
+      setTimeout(() => {
+        toaster.error({
+          title: "❌ 회원가입 실패",
+          description: error.message || "회원가입 중 오류가 발생했습니다.",
+          duration: 4000,
+        });
+      }, 100);
     } finally {
       setIsSubmitting(false);
     }

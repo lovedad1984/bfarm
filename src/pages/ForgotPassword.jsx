@@ -58,19 +58,40 @@ const ForgotPassword = () => {
       const result = await sendPasswordResetEmail(email);
 
       if (result.success) {
-        setIsSubmitted(true);
-        toaster.success({
-          title: "이메일 발송 완료",
-          description: "비밀번호 재설정 링크를 이메일로 발송했습니다.",
-        });
+        // 토스터를 먼저 안전하게 표시
+        setTimeout(() => {
+          toaster.success({
+            title: "📧 이메일 발송 완료",
+            description: "비밀번호 재설정 링크를 이메일로 발송했습니다.",
+            duration: 4000,
+          });
+        }, 100);
+
+        // 토스터가 보인 후 상태 변경
+        setTimeout(() => {
+          setIsSubmitted(true);
+        }, 200);
       } else {
-        toaster.error({
-          title: "발송 실패",
-          description: result.message,
-        });
+        // 에러 토스터도 안전하게 표시
+        setTimeout(() => {
+          toaster.error({
+            title: "❌ 발송 실패",
+            description: result.message,
+            duration: 4000,
+          });
+        }, 100);
       }
     } catch (error) {
       console.error("비밀번호 재설정 오류:", error);
+
+      // catch 에러도 안전하게 표시
+      setTimeout(() => {
+        toaster.error({
+          title: "❌ 오류 발생",
+          description: "비밀번호 재설정 중 오류가 발생했습니다.",
+          duration: 4000,
+        });
+      }, 100);
     }
   };
 

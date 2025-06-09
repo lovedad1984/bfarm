@@ -46,12 +46,7 @@ export const useAuthStore = create((set, get) => ({
       try {
         await setDoc(doc(db, "users", user.uid), userProfileData);
         console.log("Firestore 프로필 저장 성공");
-
-        // 회원가입 성공 토스터
-        toaster.success({
-          title: "회원가입 성공!",
-          description: "환영합니다! 잠시 후 메인 페이지로 이동합니다.",
-        });
+        // 회원가입 성공 토스터 Signup.jsx 에서 제어
       } catch (firestoreError) {
         console.error("Firestore 저장 실패:", firestoreError);
         // Firestore 실패해도 회원가입은 성공으로 처리
