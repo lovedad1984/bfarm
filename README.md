@@ -22,6 +22,11 @@ bFarm은 다음과 같은 기능을 제공합니다:
 
 ## 설치 및 실행
 
+```bash
+npm install
+npm run dev
+```
+
 ### 필수 요구사항
 
 - Node.js 16.x 이상

@@ -4,9 +4,11 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut as firebaseSignOut,
+  sendPasswordResetEmail,
   onAuthStateChanged,
 } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
+import { toaster } from "@/components/ui/toaster";
 
 export const useAuthStore = create((set, get) => ({
   user: null, // 현재 로그인된 사용자 정보
@@ -44,6 +46,12 @@ export const useAuthStore = create((set, get) => ({
       try {
         await setDoc(doc(db, "users", user.uid), userProfileData);
         console.log("Firestore 프로필 저장 성공");
+
+        // 회원가입 성공 토스터
+        toaster.success({
+          title: "회원가입 성공!",
+          description: "환영합니다! 잠시 후 메인 페이지로 이동합니다.",
+        });
       } catch (firestoreError) {
         console.error("Firestore 저장 실패:", firestoreError);
         // Firestore 실패해도 회원가입은 성공으로 처리
@@ -82,8 +90,56 @@ export const useAuthStore = create((set, get) => ({
       set({ loading: true, error: null });
       await firebaseSignOut(auth);
       set({ userProfile: null }); // 사용자 프로필 정보 초기화
+
+      toaster.success({
+        title: "로그아웃 완료",
+        description: "안전하게 로그아웃되었습니다.",
+      });
     } catch (error) {
       set({ error: error.message });
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  // 비밀번호 재설정 이메일 발송
+  sendPasswordResetEmail: async (email) => {
+    try {
+      set({ loading: true, error: null });
+
+      await sendPasswordResetEmail(auth, email, {
+        // 한국어 설정 (선택사항)
+        url: window.location.origin + "/login", // 비밀번호 재설정 후 돌아갈 URL
+        handleCodeInApp: false, // 이메일에서 직접 처리
+      });
+
+      console.log("비밀번호 재설정 이메일 발송 성공:", email);
+      return {
+        success: true,
+        message: "비밀번호 재설정 이메일을 발송했습니다.",
+      };
+    } catch (error) {
+      console.error("비밀번호 재설정 이메일 발송 오류:", error);
+
+      let errorMessage = "비밀번호 재설정 이메일 발송에 실패했습니다.";
+
+      // Firebase 에러 코드에 따른 한국어 메시지
+      switch (error.code) {
+        case "auth/user-not-found":
+          errorMessage = "등록되지 않은 이메일입니다.";
+          break;
+        case "auth/invalid-email":
+          errorMessage = "올바르지 않은 이메일 형식입니다.";
+          break;
+        case "auth/too-many-requests":
+          errorMessage = "요청이 너무 많습니다. 잠시 후 다시 시도해주세요.";
+          break;
+        default:
+          errorMessage = error.message;
+      }
+
+      set({ error: errorMessage });
+      return { success: false, message: errorMessage };
     } finally {
       set({ loading: false });
     }

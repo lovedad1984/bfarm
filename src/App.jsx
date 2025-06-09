@@ -16,6 +16,7 @@ import Home from "@/pages/Home";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
 import Profile from "@/pages/Profile";
+import ForgotPassword from "@/pages/ForgotPassword";
 import NotFound from "@/pages/NotFound";
 
 function App() {
@@ -69,6 +70,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
 
               {/* 보호된 페이지 (로그인 필요) */}
               <Route
