@@ -1,0 +1,59 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // 사용자 프로필 - 본인만 읽기/쓰기 가능
+    match /users/{userId} {
+      allow read, write: if request.auth != null 
+        && request.auth.uid == userId
+        && isValidUserData(request.resource.data);
+    }
+    
+    // 상품 - 읽기는 모두, 쓰기는 차단 (관리자만 가능하도록 나중에 수정)
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if false; // 현재는 관리자 기능 없으므로 차단
+    }
+    
+    // 주문 - 로그인한 사용자만, 본인 주문만 접근
+    match /orders/{orderId} {
+      allow read, write: if request.auth != null 
+        && request.auth.uid == resource.data.userId;
+    }
+    
+    // 리뷰 - 로그인한 사용자만, 스팸 방지
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if request.auth != null 
+        && isValidReview(request.resource.data);
+      allow update, delete: if request.auth != null 
+        && request.auth.uid == resource.data.userId;
+    }
+    
+    // 나머지 모든 컬렉션은 차단
+    match /{document=**} {
+      allow read, write: if false;
+    }
+    
+    // 헬퍼 함수들
+    function isValidUserData(data) {
+      return data != null
+        && data.keys().hasAll(['email', 'username'])
+        && data.username is string
+        && data.username.size() >= 2 
+        && data.username.size() <= 20
+        && data.email.matches('.*@.*\\..*'); // 이메일 형식 체크
+    }
+    
+    function isValidReview(data) {
+      return data != null
+        && data.keys().hasAll(['rating', 'comment', 'productId'])
+        && data.rating is number
+        && data.rating >= 1 
+        && data.rating <= 5
+        && data.comment is string
+        && data.comment.size() >= 10 
+        && data.comment.size() <= 500;
+    }
+  }
+}
