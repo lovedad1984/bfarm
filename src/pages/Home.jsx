@@ -149,7 +149,7 @@ const Home = () => {
             size={{ base: "xl", md: "2xl", lg: "3xl" }}
             textShadow="1px 1px 3px rgba(0,0,0,0.7)"
           >
-            가치를 더하는 알뜰 소비!
+            가치를 더하는 알뜰 소비! test
           </Heading>
           <Text
             fontSize={{ base: "md", lg: "lg" }}
