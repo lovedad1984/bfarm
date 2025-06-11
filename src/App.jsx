@@ -18,6 +18,7 @@ import Signup from "@/pages/Signup";
 import Profile from "@/pages/Profile";
 import ForgotPassword from "@/pages/ForgotPassword";
 import NotFound from "@/pages/NotFound";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   const { initialize, loading } = useAuthStore();
@@ -40,6 +41,7 @@ function App() {
   return (
     <Provider>
       <Router>
+        <ScrollToTop />
         <div className="App">
           {/* 네비게이션 오버레이 */}
           <NavigationOverlay />
