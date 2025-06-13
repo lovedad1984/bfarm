@@ -114,7 +114,7 @@ bfarm/
 1. **저장소 클론**
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/lovedad1984/bfarm
    cd bfarm
    ```
 
