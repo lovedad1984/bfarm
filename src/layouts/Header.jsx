@@ -305,10 +305,13 @@ const Header = () => {
           flex={{ base: 1, md: 0 }}
           justify={"flex-end"}
           direction={"row"}
-          gap={6}
+          gap={2}
         >
           {user ? (
             <>
+              <Box display={{ base: "none", md: "block" }}>
+                <ColorModeButton />
+              </Box>
               <Button
                 as={RouterLink}
                 to="/cart"
